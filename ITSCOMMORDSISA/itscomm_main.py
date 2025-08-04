@@ -14,6 +14,14 @@ import ftp_handler
 import file_processor
 import db_importer
 
+def resource_path(relative_path):
+    """ Ottiene il percorso assoluto alla risorsa, funziona per dev e per PyInstaller """
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
 app_config = None
 main_gui = None
 ftp_conn = None
@@ -726,7 +734,8 @@ def handle_app_closing():
 if __name__ == "__main__":
     db_conn_instance = None
     try:
-        app_config = config_loader.load_app_config("ftp_itscommconfig.xml")
+        config_path = resource_path("ftp_itscommconfig.xml")
+        app_config = config_loader.load_app_config(config_path)
     except SystemExit:
         sys.exit(1)
     except Exception as e_conf:

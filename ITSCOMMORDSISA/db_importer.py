@@ -1,5 +1,6 @@
 import pyodbc
 import datetime # Added for isinstance check
+from decimal import Decimal
 
 class DBImporter:
     def __init__(self, driver, server, database_name, username, password):
@@ -654,6 +655,13 @@ class DBImporter:
             if _main_gui_ref: _main_gui_ref.safe_insert_listbox(f"DBImporter ({table_name}): Nessun dato fornito.")
             print(f"DBImporter ({table_name}): Nessun dato fornito.")
             return 0, []
+
+        # Convert Decimal to string to avoid pyodbc locale issues
+        processed_rows = [
+            tuple(str(item) if isinstance(item, Decimal) else item for item in row)
+            for row in data_rows
+        ]
+        data_rows = processed_rows
 
         # Columns for INSERT statement (ID_VAR is identity, should not be in INSERT list)
         # The all_column_names list passed from itscomm_main should already be correct.
