@@ -291,6 +291,13 @@ class DBImporter:
             row_tuple = tuple(item_dict.get(col_name) for col_name in cols)
             rows_to_insert.append(row_tuple)
 
+        # Convert Decimal to string to avoid pyodbc locale issues
+        processed_rows = [
+            tuple(str(item) if isinstance(item, Decimal) else item for item in row)
+            for row in rows_to_insert
+        ]
+        rows_to_insert = processed_rows
+
         successfully_inserted_count = 0
         errors = []
 
