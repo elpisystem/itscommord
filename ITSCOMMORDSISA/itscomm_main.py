@@ -14,12 +14,19 @@ import ftp_handler
 import file_processor
 import db_importer
 
-def resource_path(relative_path):
-    """ Ottiene il percorso assoluto alla risorsa, funziona per dev e per PyInstaller """
-    try:
-        base_path = sys._MEIPASS
-    except AttributeError:
-        base_path = os.path.abspath(".")
+def get_resource_path_for_external_file(relative_path):
+    """
+    Ottiene il percorso per un file che deve essere esterno all'eseguibile,
+    cercandolo nella directory dell'eseguibile se 'congelato', o nella
+    directory dello script se in sviluppo.
+    """
+    if getattr(sys, 'frozen', False):
+        # Percorso base quando eseguito come .exe
+        base_path = os.path.dirname(sys.executable)
+    else:
+        # Percorso base quando eseguito come script .py
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
     return os.path.join(base_path, relative_path)
 
 app_config = None
@@ -734,7 +741,7 @@ def handle_app_closing():
 if __name__ == "__main__":
     db_conn_instance = None
     try:
-        config_path = resource_path("ftp_itscommconfig.xml")
+        config_path = get_resource_path_for_external_file("ftp_itscommconfig.xml")
         app_config = config_loader.load_app_config(config_path)
     except SystemExit:
         sys.exit(1)
