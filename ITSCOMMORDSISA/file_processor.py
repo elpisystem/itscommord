@@ -34,7 +34,7 @@ INVOICE_HEADER_TO_DB_COLUMN_MAP = {
     normalize_header("Sconto 2"): ("DOC_RIGHE", "SCONTO2"),
     normalize_header("Sconto 3"): ("DOC_RIGHE", "SCONTO3"),
     normalize_header("Prezzo Netto"): ("DOC_RIGHE", "PREZZO_NETTO"),
-    normalize_header("S-O = Omaggio/Sconto merce"): ("DOC_RIGHE", "OMAGGIO_SN"),
+    normalize_header("S-O = Omaggio/Sconto merce"): ("DOC_RIGHE", "OMAGGIO_SCONTO"),
     normalize_header("Codice Iva"): ("DOC_RIGHE", "COD_IVA"),
     normalize_header("Aliquota Iva"): ("DOC_RIGHE", "ALIQUOTA_IVA"),
     normalize_header("Prezzo di Vendita Consigliato"): ("DOC_RIGHE", "PREZZO_VEND_CONS"),
@@ -68,16 +68,30 @@ def parse_invoice_date(date_str: str) -> datetime.date | None:
 def parse_invoice_decimal(decimal_str: str) -> Decimal | None:
     if not decimal_str or not decimal_str.strip():
         return None
+
+    original_for_debug = decimal_str.strip()
+
     try:
-        # Standardize by removing thousands separators (dots) and then replacing comma with dot for decimal
-        # Example: "1.234,56" -> "1234.56"; "123,45" -> "123.45"
-        original_for_debug = decimal_str # For debug
-        cleaned_str = decimal_str.strip().replace('.', '') # Remove potential thousands separators
-        cleaned_str = cleaned_str.replace(',', '.')     # Replace decimal comma with dot
-        print(f"DEBUG parse_invoice_decimal: original='{original_for_debug}', cleaned='{cleaned_str}'") # DEBUG LINE
-        return Decimal(cleaned_str)
+        # Normalize by replacing comma with dot for decimal separator
+        # This handles "12,34" -> "12.34" and "1.234,56" -> "1.234.56"
+        normalized_str = original_for_debug.replace(',', '.')
+
+        # If dots are still present, they could be thousands separators.
+        # We assume the last dot is the decimal separator.
+        parts = normalized_str.split('.')
+        if len(parts) > 1:
+            # Re-join the integer part (all parts except the last)
+            integer_part = "".join(parts[:-1])
+            fractional_part = parts[-1]
+            # Form the final string for Decimal conversion
+            final_str = f"{integer_part}.{fractional_part}"
+        else:
+            # No dots, or the only dot was the decimal separator already
+            final_str = normalized_str
+
+        return Decimal(final_str)
     except InvalidOperation:
-        print(f"Warning: Could not parse decimal string '{original_for_debug}' (cleaned to '{cleaned_str}')")
+        print(f"Warning: Could not parse decimal string '{original_for_debug}'")
         return None
 
 def to_nullable_string(value: str | None) -> str | None:

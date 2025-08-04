@@ -275,7 +275,7 @@ class DBImporter:
         # Define column order for INSERT - ID_RIGA is identity and should be excluded
         cols = [
             "NUM_DOC", "COD_ART", "DES", "QTA", "TIPO_MIS", "PREZZO",
-            "SCONTO1", "SCONTO2", "SCONTO3", "PREZZO_NETTO", "OMAGGIO_SN",
+            "SCONTO1", "SCONTO2", "SCONTO3", "PREZZO_NETTO", "OMAGGIO_SCONTO",
             "COD_IVA", "ALIQUOTA_IVA", "PREZZO_VEND_CONS", "COD_REP", "REPARTO",
             "EAN1", "EAN2", "EAN3", "EAN4", "EAN5", "EAN6", "EAN7", "EAN8", "EAN9", "EAN10",
             "RIF_ORDINE"
