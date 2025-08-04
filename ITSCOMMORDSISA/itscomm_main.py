@@ -7,6 +7,7 @@ import time
 import shutil
 import datetime
 import traceback
+import uuid
 
 import config_loader
 import gui_manager
