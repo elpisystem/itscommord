@@ -1,0 +1,97 @@
+<config>
+    <ftp>
+        <host>ictftp.dyndns.org</host>
+        <user>sisa00730</user>
+        <password>7u8Gs9s</password>
+        <base_dir>/</base_dir>
+        <doc_dir>/DOC</doc_dir>
+    </ftp>
+    <local>
+        <import_dir>\\192.168.1.197\temp</import_dir>
+        <ordine_dir>\\192.168.1.197\OrdineSISA</ordine_dir>
+    </local>
+    <database>
+        <!-- VERIFICA ATTENTAMENTE QUESTO DRIVER! -->
+        <!-- Esempi comuni: {SQL Server}, {SQL Server Native Client 10.0}, {SQL Server Native Client 11.0}, {ODBC Driver 17 for SQL Server} -->
+        <driver>{SQL Server}</driver> 
+        <server>192.168.1.197\SQLEXPRESS</server>
+        <name>ITS_ORDINE</name>
+        <user>sa</user>
+        <password>sagrg</password>
+        <default_schema>dbo</default_schema>
+    </database>
+    <file_layouts>
+        <layout record_type="ANARTI" target_table="ANARTI" schema="dbo">
+            <column name="COD_ART" start="7" length="9" type="str" pk="true" />
+            <column name="COD_EAN_ULT_INS" start="16" length="13" type="str" />
+            <column name="DES" start="29" length="50" type="str" />
+            <column name="DES_SCONTR" start="79" length="20" type="str" />
+            <column name="GRAM_LORD" start="99" length="7" type="decimal" scale="3" decimal_char="," />
+            <column name="GRAM_NETT" start="106" length="7" type="decimal" scale="3" decimal_char="," />
+            <column name="UN_MIS" start="113" length="2" type="str" />
+            <column name="TIPO_UN_MIS" start="115" length="1" type="str" />
+            <column name="ULT_COD_FORNI" start="116" length="5" type="str" />
+            <column name="P_IVA_FORNI" start="121" length="11" type="str" />
+            <column name="COD_ART_FORNI_1" start="132" length="15" type="str" />
+            <column name="COD_ART_FORNI_2" start="147" length="15" type="str" />
+            <column name="COD_ART_FORNI_3" start="162" length="15" type="str" />
+            <column name="AREA" start="177" length="2" type="str" />
+            <column name="SETTORE" start="179" length="2" type="str" />
+            <column name="COMPARTO" start="181" length="5" type="str" />
+            <column name="FAM" start="186" length="5" type="str" />
+            <column name="SUB_FAM" start="191" length="5" type="str" />
+            <column name="AL_IVA" start="196" length="2" type="str" />
+            <column name="STATO_ART" start="198" length="2" type="str" />
+            <column name="IMB" start="200" length="2" type="str" />
+            <column name="PZ_X_CART" start="202" length="5" type="str" />
+            <column name="CART_X_PALLET" start="207" length="5" type="str" />
+            <column name="DURAB_PV" start="212" length="5" type="str" />
+            <column name="DURAB_TOT" start="217" length="5" type="str" />
+            <column name="GEST_POS" start="222" length="1" type="str" />
+            <column name="LEGAME" start="223" length="5" type="str" />
+            <column name="DATA_INS" start="228" length="6" type="str_date" source_format="aammgg" />
+            <column name="DATA_VAR" start="234" length="6" type="str_date" source_format="aammgg" />
+            <column name="FASC_APP" start="240" length="2" type="str" />
+            <column name="REP_CASSA" start="242" length="2" type="str" />
+            <column name="PLU" start="244" length="6" type="str" />
+            <column name="ASSORT_SN" start="250" length="1" type="str" />
+        </layout>
+        <layout record_type="ARTEAN" target_table="ARTEAN" schema="dbo">
+            <column name="COD_ART" start="7" length="9" type="str" pk="true" />
+            <column name="COD_EAN" start="16" length="13" type="str" pk="true" />
+            <column name="MULT_EAN" start="29" length="5" type="str" />
+            <column name="DATA_INS_EAN" start="34" length="6" type="str_date" source_format="aammgg" />
+        </layout>
+        <layout record_type="ARTLEG" target_table="ARTLEG" schema="dbo">
+            <column name="COD_ART_PRIM" start="7" length="9" type="str" pk="true" />
+            <column name="COD_ART_LEG" start="16" length="9" type="str" pk="true" />
+            <column name="QTA_ART_LEG" start="25" length="7" type="decimal" scale="4" decimal_char="," />
+        </layout>
+        <layout record_type="VARLIS" target_table="VARLIS" schema="dbo">
+            <column name="COD_ART" start="7" length="9" type="str" />
+            <column name="COD_EAN" start="16" length="13" type="str" />
+            <column name="DATA_INI_SI" start="29" length="6" type="str_date" source_format="aammgg" />
+            <column name="DATA_FINE_SI" start="35" length="6" type="str_date" source_format="aammgg" />
+            <column name="DATA_INI_SO" start="41" length="6" type="str_date" source_format="aammgg" />
+            <column name="DATA_FINE_SO" start="47" length="6" type="str_date" source_format="aammgg" />
+            <column name="LIST_CESSIONE" start="53" length="8" type="decimal" scale="3" decimal_char="," />
+            <column name="PREZZO_CONSIGL" start="61" length="8" type="decimal" scale="3" decimal_char="," />
+            <column name="NX_M" start="69" length="3" type="str" />
+            <column name="COD_VOLANTINO" start="72" length="10" type="str" />
+            <column name="DES_VOLANTINO" start="82" length="50" type="str" />
+            <column name="TIPO_VOL" start="134" length="1" type="str" />
+            <column name="EX_COD_VOL" start="135" length="10" type="str" />
+        </layout>
+        <layout record_type="ANAFOR" target_table="ANAFOR" schema="dbo">
+            <column name="COD_FORNI" start="7" length="5" type="str" pk="true"/>
+            <column name="RAGSOC" start="12" length="40" type="str" />
+            <column name="INDIRIZZO" start="52" length="30" type="str" />
+            <column name="LOCALITA" start="82" length="20" type="str" />
+            <column name="PROV" start="102" length="2" type="str" />
+            <column name="CAP" start="104" length="5" type="str" />
+            <column name="TEL" start="109" length="15" type="str" />
+            <column name="FAX" start="124" length="15" type="str" />
+            <column name="EMAIL" start="139" length="40" type="str" />
+        </layout>
+    </file_layouts>
+</config>
